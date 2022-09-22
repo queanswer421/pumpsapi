@@ -5,9 +5,51 @@ namespace App\Http\Controllers;
 use App\Models\Employer;
 use App\Http\Requests\StoreEmployerRequest;
 use App\Http\Requests\UpdateEmployerRequest;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class EmployerController extends Controller
 {
+        /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()->all()]);
+        }
+
+        if(auth()->guard('emplo')->attempt(['email' => request('email'), 'password' => request('password')])){
+
+            config(['auth.guards.api.provider' => 'emplo']);
+            
+            $employer = Employer::select('employers.*')->find(auth()->guard('emplo')->user()->id);
+            $success =  $employer;
+            $success['token'] =  $employer->createToken('MyEmployer',['emplo'])->accessToken; 
+
+            return response()->json($success, 200);
+        }else{ 
+            return response()->json(['error' => ['Email and Password are Wrong.']], 200);
+        }
+    }
+        /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function dashboard()
+    {
+        $success =  Auth::user()->name;
+        return response()->json($success, 200);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +57,7 @@ class EmployerController extends Controller
      */
     public function index()
     {
-        //
+        return "TEST OK";
     }
 
     /**
