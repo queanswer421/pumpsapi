@@ -47,8 +47,36 @@ class AdministratorController extends Controller
      */
     public function dashboard()
     {
-        $success =  Auth::user()->name;
-        return response()->json($success, 200);
+        // $success =  Auth::user()->name;
+        // return response()->json($success, 200);
+        $data = [
+            [
+            'id'=> 1,
+            'icon' => "mdi-sun-thermometer",
+            'title' => "Pompy",
+            'count' => \App\Models\Pump::all()->count()
+            ],
+            [
+                'id' => 2,
+                'icon' => "mdi-home-city",
+                'title' => "Firmy",
+                'count' => \App\Models\Company::all()->count()
+            ],
+            [
+                'id' => 3,
+                'icon' => "mdi-account-outline",
+                'title' => "Pracownicy",
+                'count' => \App\Models\Employer::all()->count()
+            ],
+            [
+                'id' => 4,
+                'icon' => "mdi-cog",
+                'title' => "Producenci",
+                'count' => \App\Models\Producer::all()->count()
+            ]
+        ];
+    
+          return $data;
     }
     /**
      * Display a listing of the resource.

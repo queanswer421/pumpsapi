@@ -23,6 +23,7 @@ use App\Http\Controllers\CategoryController;
 Route::get('/producers', [ProducerController::class, 'index']);
 Route::post('/producers', [ProducerController::class, 'store']);
 Route::get('/pumps', [PumpController::class, 'index']);
+Route::get('/dashboard', [AdministratorController::class, 'dashboard']);
 Route::get('/types', [TypeController::class, 'index']);
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/companies', [CompanyController::class, 'index']);
