@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producer;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreProducerRequest;
 use App\Http\Requests\UpdateProducerRequest;
+use App\Http\Resources\ProducerResource;
+
 
 class ProducerController extends Controller
 {
@@ -15,7 +18,8 @@ class ProducerController extends Controller
      */
     public function index()
     {
-        //
+        // return ProducerResource::collection(Producer::all());
+        return response()->json(ProducerResource::collection(Producer::all()));
     }
 
     /**
@@ -24,9 +28,14 @@ class ProducerController extends Controller
      * @param  \App\Http\Requests\StoreProducerRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProducerRequest $request)
+    public function store(Request $request)
     {
-        //
+        $producers = Producer::create([
+            'name' => $request->name,
+            'email' => $request->email,
+          ]);
+    
+          return new ProducerResource($producers);
     }
 
     /**

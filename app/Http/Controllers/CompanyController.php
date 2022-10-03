@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateCompanyRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Resources\CompanyResource;
 
 class CompanyController extends Controller
 {
@@ -57,7 +58,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return "TEST OK";
+        // return CompanyResource::collection(Company::select('id','name')->get());
+        return CompanyResource::collection(Company::all());
     }
 
 
@@ -67,9 +69,16 @@ class CompanyController extends Controller
      * @param  \App\Http\Requests\StoreCompanyRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCompanyRequest $request)
+    // public function store(StoreCompanyRequest $request)
+    public function store(Request $request)
     {
-        //
+        $company = Company::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+          ]);
+    
+          return new CompanyResource($company);
     }
 
     /**
@@ -90,9 +99,18 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCompanyRequest $request, Company $company)
+    public function update(Request $request, Company $company)
     {
-        //
+    // check if currently authenticated user is the owner of the book
+    //   if ($request->user()->id !== $company->user_id) {
+    //     return response()->json(['error' => 'Nie możesz edytowac nieswojej firmy.'], 403);
+    //   }
+
+
+      $company->update($request->only(['name', 'email', 'password']));
+
+      return new CompanyResource($company);
+
     }
 
     /**
@@ -103,6 +121,8 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        
+        $company->delete();
+        return response(null, 204);
     }
 }

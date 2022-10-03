@@ -4,14 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProducerResource extends JsonResource
+class PumpResource extends JsonResource
 {
-    /**
-     * The "data" wrapper that should be applied.
-     *
-     * @var string
-     */
-    public static $wrap = 'vehicle';
     /**
      * Transform the resource into an array.
      *
@@ -20,10 +14,6 @@ class ProducerResource extends JsonResource
      */
     public function toArray($request)
     {
-        // return parent::toArray($request);
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-          ];
+        return parent::toArray($request);
     }
 }
