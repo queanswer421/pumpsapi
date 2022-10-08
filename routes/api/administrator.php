@@ -2,6 +2,7 @@
 // header('Access-Control-Allow-Origin: *');
 // header('Access-Control-Allow-Methods: *');
 // header('Access-Control-Allow-Headers: *');
+header('Access-Control-Allow-Private-Network: true');
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdministratorController;
